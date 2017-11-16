@@ -53,7 +53,9 @@ const dump = (
 const backup = () => {
   const day = moment().format("YYYY-MM-DD");
   const time = moment().format("H-mm-ss");
-  const oldDay = day.subtract(expired, "days").format("YYYY-MM-DD");
+  const oldDay = moment()
+    .subtract(expired, "days")
+    .format("YYYY-MM-DD");
   dblist.reduce((chain, db) => {
     return chain
       .then(() => dump(day, time, db))
