@@ -15,7 +15,7 @@ const arrange = (oldDay, { database, output = "~/mongobackup" }) => {
       const list = stdout.split("\n");
       list.forEach(foldername => {
         if (moment(foldername, "YYYY-MM-DD") < moment(oldDay, "YYYY-MM-DD")) {
-          exec(`rm -rf ${output}/${database}/${foldername}`);
+          exec(`rm -rf ${output}/${foldername}`);
         }
       });
       resolve();
@@ -26,7 +26,6 @@ const arrange = (oldDay, { database, output = "~/mongobackup" }) => {
 // 备份
 const dump = (
   day,
-  time,
   {
     database,
     user,
@@ -39,7 +38,7 @@ const dump = (
     exec(
       `mongodump -h ${host} -d ${database} ${user && password
         ? `-u ${user} -p ${password} `
-        : ``} -o ${output}/${database}/${day}/${time}`,
+        : ``} -o ${output}/${day}`,
       (err, stdout, stderr) => {
         if (err) {
           reject(err);
@@ -52,16 +51,16 @@ const dump = (
 
 const backup = () => {
   const day = moment().format("YYYY-MM-DD");
-  const time = moment().format("H-mm-ss");
   const oldDay = moment()
     .subtract(expired, "days")
     .format("YYYY-MM-DD");
   dblist.reduce((chain, db) => {
     return chain
-      .then(() => dump(day, time, db))
+      .then(() => dump(day, db))
       .then(() => arrange(oldDay, db))
       .catch(console.log);
   }, Promise.resolve());
+  console.log("done");
 };
 
 exports.start = () => {
