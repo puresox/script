@@ -1,0 +1,15 @@
+{
+  "name": "mongodump",
+  "version": "1.0.0",
+  "description": "备份mongodb",
+  "main": "backup.js",
+  "scripts": {
+    "start": "NODE_ENV=production pm2 start backup.js --name 'backup'",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "puresox",
+  "license": "ISC",
+  "dependencies": {
+    "moment": "^2.19.2"
+  }
+}
