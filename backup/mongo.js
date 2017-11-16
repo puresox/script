@@ -60,7 +60,7 @@ const backup = () => {
     return chain
       .then(() => dump(day, time, db))
       .then(() => arrange(oldDay, db))
-      .catch(console.log(err));
+      .catch(console.log);
   }, Promise.resolve());
 };
 
